@@ -1,5 +1,6 @@
 import ControlFlowGraphBuilder.CFGListener;
 import IOFeatures.InputFeatures;
+import Lexer.LexerImplementation;
 import TreeBuilder.CSTListener;
 
 import org.antlr.v4.runtime.CharStreams;
@@ -29,7 +30,8 @@ public class Lab1 {
         ParseTree tree = parser.source();
 
         CSTListener listener = new CSTListener(parser);
-        CFGListener cfgListener = new CFGListener(parser);
+
+        CFGListener cfgListener = new CFGListener(parser, new LexerImplementation());
         ParseTreeWalker.DEFAULT.walk(listener, tree);
         ParseTreeWalker.DEFAULT.walk(cfgListener, tree);
         ioFeatures.writeFile(listener.toString(), "out.txt");
@@ -40,6 +42,7 @@ public class Lab1 {
         } catch (org.jgrapht.io.ExportException ex) {
             ex.getStackTrace();
         }
+        cfgListener.printCommands();
 
 
     }

@@ -1,4 +1,4 @@
-// Generated from /home/vader_vega/IdeaProjects/ProgramModelVerification/src/MyLang.g4 by ANTLR 4.7.2
+// Generated from /home/vadervega/IdeaProjects/ProgramModelVerification/src/MyLang.g4 by ANTLR 4.7.2
 
 package GeneratedFiles;
 
@@ -1704,15 +1704,6 @@ public class MyLangParser extends Parser {
 				match(T__16);
 				}
 				break;
-			case IDENTIFIER:
-				{
-				_localctx = new PlaceContext(_localctx);
-				_ctx = _localctx;
-				_prevctx = _localctx;
-				setState(194);
-				match(IDENTIFIER);
-				}
-				break;
 			case CHAR:
 			case HEX:
 			case BITS:
@@ -1723,8 +1714,17 @@ public class MyLangParser extends Parser {
 				_localctx = new LiteralContext(_localctx);
 				_ctx = _localctx;
 				_prevctx = _localctx;
-				setState(195);
+				setState(194);
 				lit();
+				}
+				break;
+			case IDENTIFIER:
+				{
+				_localctx = new PlaceContext(_localctx);
+				_ctx = _localctx;
+				_prevctx = _localctx;
+				setState(195);
+				match(IDENTIFIER);
 				}
 				break;
 			default:
@@ -1931,7 +1931,7 @@ public class MyLangParser extends Parser {
 		"\u00bc\3\2\2\2\u00ba\u00b8\3\2\2\2\u00ba\u00bb\3\2\2\2\u00bb%\3\2\2\2"+
 		"\u00bc\u00ba\3\2\2\2\u00bd\u00be\b\24\1\2\u00be\u00bf\7(\2\2\u00bf\u00c7"+
 		"\5&\24\b\u00c0\u00c1\7\22\2\2\u00c1\u00c2\5&\24\2\u00c2\u00c3\7\23\2\2"+
-		"\u00c3\u00c7\3\2\2\2\u00c4\u00c7\7%\2\2\u00c5\u00c7\5\6\4\2\u00c6\u00bd"+
+		"\u00c3\u00c7\3\2\2\2\u00c4\u00c7\5\6\4\2\u00c5\u00c7\7%\2\2\u00c6\u00bd"+
 		"\3\2\2\2\u00c6\u00c0\3\2\2\2\u00c6\u00c4\3\2\2\2\u00c6\u00c5\3\2\2\2\u00c7"+
 		"\u00e7\3\2\2\2\u00c8\u00c9\f\t\2\2\u00c9\u00ca\7\'\2\2\u00ca\u00e6\5&"+
 		"\24\n\u00cb\u00cc\f\6\2\2\u00cc\u00d5\7\22\2\2\u00cd\u00d2\5&\24\2\u00ce"+

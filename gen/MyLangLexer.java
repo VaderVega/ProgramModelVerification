@@ -1,4 +1,4 @@
-// Generated from /home/vader_vega/IdeaProjects/ProgramModelVerification/src/MyLang.g4 by ANTLR 4.7.2
+// Generated from /home/vadervega/IdeaProjects/ProgramModelVerification/src/MyLang.g4 by ANTLR 4.7.2
 
 package GeneratedFiles;
 

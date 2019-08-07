@@ -84,6 +84,6 @@ expr
     |'(' expr ')' #braces
     | expr '(' (expr (',' expr)*)? ')' #call
     | expr '[' (expr (',' expr)*)? ']' #indexer
-    | IDENTIFIER #place
     | lit #literal
+    | IDENTIFIER #place
     ;

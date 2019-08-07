@@ -1,8 +1,8 @@
 method gcd(a : int, b : int) : int
 begin
 	res := 0;
-	a := 0;
-	b := 1;
+	a := 1024;
+	b := 896;
 	while b != 0 do
 	begin
 		if a > b then
