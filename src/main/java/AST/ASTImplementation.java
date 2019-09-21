@@ -211,10 +211,10 @@ public class ASTImplementation implements AbstractSyntaxTree {
     }
 
     private Node condition() {
-        final Token token = tokens.poll();
-        Preconditions.checkState(token.getToken().equals("("), "'(' expected");
+        //final Token token = tokens.poll();
+        //Preconditions.checkState(token.getToken().equals("("), "'(' expected");
         Node node = expression();
-        Preconditions.checkState(tokens.poll().getToken().equals(")"), "')' expected");
+        //Preconditions.checkState(tokens.poll().getToken().equals(")"), "')' expected");
         return node;
     }
 

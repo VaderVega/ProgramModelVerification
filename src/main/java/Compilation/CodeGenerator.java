@@ -1,9 +1,11 @@
 package Compilation;
 
+import AST.AbstractSyntaxTree;
+
 import java.util.List;
 
-public interface Compiler {
-    //List<String> compile(final AbstractSyntaxTree tree);
+public interface CodeGenerator {
+    List<String> compile(final AbstractSyntaxTree tree);
 
     /**
      * IFETCH x - положить на стек значение переменной x

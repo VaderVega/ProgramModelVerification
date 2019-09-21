@@ -7,7 +7,6 @@ import Lexer.Lexer;
 import Lexer.Token;
 import com.google.common.collect.Queues;
 import org.antlr.v4.runtime.Parser;
-import org.antlr.v4.runtime.ParserRuleContext;
 
 import org.jgrapht.Graph;
 import org.jgrapht.graph.DefaultEdge;
@@ -17,7 +16,7 @@ import org.jgrapht.io.*;
 import java.io.*;
 import java.util.*;
 
-import static Compilation.Compiler.Instruction.*;
+import static Compilation.CodeGenerator.Instruction.*;
 import static ControlFlowGraphBuilder.CodeBlock.BlockType.*;
 
 public class CFGListener extends MyLangBaseListener {
