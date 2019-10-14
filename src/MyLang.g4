@@ -23,13 +23,30 @@ COMMENT
 
 source: sourceItem* EOF;
 
-sourceItem : funcDef;
+sourceItem :
+    funcDef
+    | classDef;
 
-funcDef : 'method' funcSignature (body|';') block;
+classDef: 'class' IDENTIFIER '{' member* '}';
+member: modifier? (funcDef|field);
+field: typeRef? (IDENTIFIER (',' IDENTIFIER)*)? ';';
+modifier: 'public'|'private';
+
+
+funcDef : 'method' funcSignature (body|';'|importSpec) (block)?;
 
 block : 'begin' statement* 'end' ';';
 
 body : ('var' ((IDENTIFIER (',' IDENTIFIER)*)? (':' typeRef)? ';')*)?;
+
+varSpec: 'var' ((IDENTIFIER (',' IDENTIFIER)*)? ';')*;
+
+importSpec: 'from' (dllEntryName 'in')? dllName ';';
+
+dllName: IDENTIFIER;
+
+dllEntryName: IDENTIFIER;
+
 
 
 

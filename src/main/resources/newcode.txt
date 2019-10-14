@@ -1,18 +1,12 @@
 class GCD_calc {
 
-    int a;
-    int b;
-    int res;
-
-
-    method printf("String format, Object...  args") from c;
+    int a, b, res;
 
     method gcd(a : int, b : int) : int
     begin
 	    res := 0;
 	    a := 1024;
 	    b := 896;
-
 	    while b != 0 do
 	    begin
 		    if a > b then
@@ -24,11 +18,9 @@ class GCD_calc {
 			    b := b - a;
 		    end;
 	    end;
-
 	    res := a + b;
-
-	    printf("res = %i", res);
-
     end;
 
+    method printf(res) from c;
 }
+

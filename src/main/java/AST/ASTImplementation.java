@@ -13,9 +13,6 @@ import java.util.Queue;
 import static AST.Node.NodeType.*;
 
 
-/**
- * Created by Sergei
- */
 
 public class ASTImplementation implements AbstractSyntaxTree {
 
@@ -24,6 +21,10 @@ public class ASTImplementation implements AbstractSyntaxTree {
     private final Node root = new Node();
     private int tabCount = 0;
     private final Queue<Token> tokens;
+
+    private boolean classFields = true;
+    private boolean dll = true;
+
 
     public ASTImplementation(final List<Token> tokens) {
         this.tokens = Queues.newArrayDeque(tokens);
@@ -139,12 +140,17 @@ public class ASTImplementation implements AbstractSyntaxTree {
                 tokens.remove();
                 break;
             case "method":
+                classFields = false;
                 n.setNodeType(FUNC);
                 tokens.poll();
                 n.setValue(tokens.poll().getToken());
                 n.setOp1(params());
                 n.setOp2(returnValueType());
-                n.setOp3(statement());
+                if (!dll) {
+                    n.setOp3(statement());
+                }
+                dll = false;
+
                 break;
             case "var":
                 n.setNodeType(VAR);
@@ -156,9 +162,57 @@ public class ASTImplementation implements AbstractSyntaxTree {
                 tokens.poll();
                 n.setOp1(term());
                 break;
+            case "from":
+                n.setNodeType(DLL);
+                tokens.poll();
+                n.setValue(tokens.poll().getToken());
+                break;
+            case "class":
+                n.setNodeType(CLASS);
+                tokens.poll();
+                n.setValue(tokens.poll().getToken());
+                n.setOp1(statement());
+                break;
             default:
+
+
                 n.setNodeType(EXPR);
+                                            //funcCall
                 n.setOp1(expression());
+                Node node = new Node();
+                n.setOp2(node);
+                if (next.getTokenType().equals(Token.TokenType.IDENTIFIER) && tokens.peek().getToken().equals("(")) {
+                    System.out.println("test");
+                    tokens.poll();
+                    for (int i = 0; i < 3; i++) {
+                        if (i == 0 && !(tokens.peek().getToken().equals(")"))) {
+                            Node n1 = new Node();
+                            n1.setNodeType(FUNCPARAM);
+                            n1.setValue(tokens.poll().getToken());
+                            tokens.poll();
+                            node.setOp1(n1);
+                            continue;
+                        } else if (i == 1 && !(tokens.peek().getToken().equals(")"))) {
+                            Node n2 = new Node();
+                            n2.setNodeType(FUNCPARAM);
+                            n2.setValue(tokens.poll().getToken());
+                            tokens.poll();
+                            node.setOp2(n2);
+                            continue;
+                        } else if (i == 3 && !(tokens.peek().getToken().equals(")"))){
+                            Node n3 = new Node();
+                            n3.setNodeType(FUNCPARAM);
+                            n3.setValue(tokens.poll().getToken());
+                            tokens.poll();
+                            node.setOp3(n3);
+                        }
+
+                        tokens.poll();
+                    }
+                    node.setNodeType(FUNCPARAMS);
+
+                    return n;
+                }
                 if (tokens.peek().getToken().equals(",")) {
                     statement();
                 } else if (tokens.peek().getToken().equals(")")) {
@@ -177,6 +231,15 @@ public class ASTImplementation implements AbstractSyntaxTree {
         Token token = tokens.poll();
         Preconditions.checkState(token.getToken().equals("("), "'(' expected");
         Node node = new Node();
+
+        if (tokens.peek().getTokenType().equals(Token.TokenType.STR)) {
+            node.setNodeType(PARAMS);
+            node.setValue(tokens.poll().getToken());
+            tokens.poll();
+            dll = true;
+            return node;
+        }
+
         node.setNodeType(PARAMS);
         Node node1 = new Node();
         Node node2 = new Node();
@@ -199,13 +262,17 @@ public class ASTImplementation implements AbstractSyntaxTree {
 
     private Node returnValueType() {
         Node node = new Node();
-        if(tokens.peek().getToken().equals(":")) {
+        if (tokens.peek().getToken().equals(":")) {
             tokens.poll();
             Node node2 = new Node();
             node2.setNodeType(RETURN);
             //node2.setOp1(node);
             node2.setOp1(expression());
             node = node2;
+        } else if (tokens.peek().getToken().equals("from")) {
+            tokens.poll();
+            node.setNodeType(DLL);
+            node.setValue(tokens.poll().getToken());
         }
         return node;
     }
@@ -220,9 +287,18 @@ public class ASTImplementation implements AbstractSyntaxTree {
 
     private Node expression() {
         final Token token = tokens.peek();
+        if (token.getTokenType() == Token.TokenType.VARTYPE && classFields) {
+            Node node = new Node();
+            node.setNodeType(DECL);
+            node.setValue(token.getToken());
+            tokens.poll();
+            node.setOp1(term());
+            return node;
+        }
         if (token.getTokenType() != Token.TokenType.IDENTIFIER) {
             return test();
         }
+
         Node node = test();
         if (node.getNodeType() == VAR && tokens.peek().getToken().equals(":=")) {
             tokens.poll();
@@ -300,24 +376,30 @@ public class ASTImplementation implements AbstractSyntaxTree {
     }
 
     private Node term() {
-        final Token token = tokens.peek();
+        final Token token = tokens.poll();
         final Token.TokenType tokenType = token.getTokenType();
         Node node = new Node();
         switch (tokenType) {
             case IDENTIFIER:
+                if (tokens.peek().getToken().equals("(")) {
+                    node.setNodeType(FUNCCALL);
+                    node.setValue(token.getToken());
+                    //tokens.poll();
+                    return  node;
+                }
                 node.setNodeType(VAR);
                 node.setValue(token.getToken());
-                tokens.poll();
+                //tokens.poll();
                 return node;
             case NUMBER:
                 node.setNodeType(CONST);
                 node.setValue(token.getToken());
-                tokens.poll();
+                //tokens.poll();
                 return node;
             case VARTYPE:
                 node.setNodeType(VARTYPE);
                 node.setValue(token.getToken());
-                tokens.poll();
+                //tokens.poll();
                 return node;
             default:
                 return expression();

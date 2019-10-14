@@ -24,6 +24,6 @@ public interface CodeGenerator {
      * HALT    - завершить работу
      */
     enum Instruction {
-        IFETCH, ISTORE, IPUSH, IPOP, IADD, ISUB, DREM, ILT, IGT, INE, JZ, JMP, FUNC, HALT
+        IFETCH, ISTORE, IPUSH, IPOP, IADD, ISUB, DREM, ILT, IGT, INE, JZ, JMP, IFUNC, ICLASS, IFUNCCALL, IFUNCPARAM, IDLL, HALT
     }
 }

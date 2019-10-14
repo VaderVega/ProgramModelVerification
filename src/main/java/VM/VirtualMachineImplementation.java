@@ -4,6 +4,7 @@ import com.google.common.collect.Maps;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Stack;
@@ -19,9 +20,18 @@ public class VirtualMachineImplementation implements VirtualMachine {
     private final Stack<Object> stack = new Stack<>();
     private Map<String, Integer> vars = Maps.newHashMap();
     private Map<String, String> varTypes = Maps.newHashMap();
+    private Map<String, List<String>> functionsCalls = Maps.newHashMap();
+
 
     private int pc = 0;
     private String arg = "";
+    private String dllname;
+    private String dllFuncName;
+    private String dllParams;
+    private String funcName;
+
+
+
 
     @Override
     public void run(final List<String> program) {
@@ -107,17 +117,46 @@ public class VirtualMachineImplementation implements VirtualMachine {
                 }
             } else if (op.equals(JMP.toString())) {
                 pc = Integer.parseInt(arg);
-            } else if (op.equals(FUNC.toString())) {
+            } else if (op.equals(IFUNC.toString())) {
                 pc += 1;
+                funcName = program.get(pc++);
+                if (program.get(pc).equals(IDLL.toString()))
+                    dllFuncName = funcName;
+
                 //op = program.get();
+            } else if (op.equals(ICLASS.toString())) {
+                pc += 3;
+            } else if (op.equals(IDLL.toString())) {
+
+                dllname = program.get(++pc);
+
+                dllParams = program.get(++pc);
+                pc++;
+            } else if (op.equals(IFUNCCALL.toString())) {
+                functionsCalls.put(program.get(++pc), new ArrayList<>());
+                funcName = program.get(pc++);
+
+            } else if (op.equals(IFUNCPARAM.toString())) {
+               functionsCalls.get(funcName).add(program.get(++pc));
+               pc++;
+               if (!(program.get(pc).equals(IFUNCPARAM.toString())))
+                   runFunc();
             } else if (op.equals(HALT.toString())) {
                 break;
             }
         }
 
+
+
         logger.warn("Execution finished. Variables table:\n {}", vars);
     }
 
+    private void runFunc() {
+        dllParams = dllParams.replace("\"", "");
+        String funcSignature = "void " + dllFuncName + "(" + dllParams + ")";
+        InterfaceGenerator ig = new InterfaceGenerator(dllFuncName, funcSignature, dllname, functionsCalls, vars);
+        ig.runDll();
+    }
     private void init() {
         pc = 0;
         stack.clear();

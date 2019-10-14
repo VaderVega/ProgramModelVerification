@@ -23,15 +23,21 @@ public class CodeGeneratorImplementation implements CodeGenerator {
     private final List<Object> program = Lists.newArrayList();
     private int pc = 0;
 
+    private boolean isDll = false;
+
     @Override
     public List<String> compile(final AbstractSyntaxTree tree) {
         logger.warn("Compiling AST");
         init();
         compile(tree.getRoot());
         final List<String> instructions = program.stream().map(Object::toString).collect(Collectors.toList());
+        for (int i = 2; i < 4; i++)
+            instructions.remove(instructions.size() - i);
+        instructions.remove(instructions.size() - 2);
         logger.warn("Compilation finished, compiled {} instructions:\n{}", instructions.size(),
                 instructions.stream()
                         .collect(joining("\n")));
+
         return instructions;
     }
 
@@ -124,6 +130,8 @@ public class CodeGeneratorImplementation implements CodeGenerator {
                 break;
             case EXPR:
                 compile(node.getOp1());
+                if (node.getOp2() != null && node.getOp2().getNodeType() != null)
+                    compile(node.getOp2());
                 gen(IPOP);
                 break;
             case ROOT:
@@ -131,10 +139,43 @@ public class CodeGeneratorImplementation implements CodeGenerator {
                 gen(HALT);
                 break;
             case FUNC:
-                gen(FUNC);
+                gen(IFUNC);
+                //if (node.get)
+                gen(node.getValue());
+                if (node.getOp2() != null)
+                    compile(node.getOp2());
                 compile(node.getOp1());
                 //compile(node.getOp2());
-                compile(node.getOp3());
+                if (node.getOp3() != null)
+                    compile(node.getOp3());
+                break;
+            case CLASS:
+                gen(ICLASS);
+                compile(node.getOp1());
+            case DLL:
+                gen(IDLL);
+                gen(node.getValue());
+                //co
+                break;
+            case PARAMS:
+                if (!(node.getValue().equals("")))
+                gen(node.getValue());
+                break;
+            case FUNCCALL:
+                gen(IFUNCCALL);
+                gen(node.getValue());
+                break;
+            case FUNCPARAMS:
+                if (node.getOp1() != null)
+                    compile(node.getOp1());
+                if (node.getOp2() != null)
+                    compile(node.getOp2());
+                if (node.getOp3() != null)
+                    compile(node.getOp3());
+                break;
+            case FUNCPARAM:
+                gen(IFUNCPARAM);
+                gen(node.getValue());
                 break;
             case DECL:
                 break;

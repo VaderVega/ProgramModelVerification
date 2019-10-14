@@ -16,3 +16,5 @@ begin
 	end;
 	res := a + b;
 end;
+
+method printf(res) from c;

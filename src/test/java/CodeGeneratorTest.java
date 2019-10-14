@@ -22,7 +22,7 @@ public class CodeGeneratorTest {
             List<String> commands = codeGenerator.compile(tree);
             StringBuilder builder = new StringBuilder();
 
-            for(String str : commands) {
+            for (String str : commands) {
                 //System.out.println(str);
                 builder.append(str);
                 builder.append("\n");
@@ -30,7 +30,7 @@ public class CodeGeneratorTest {
 
             String pathToFile = "src/test/resources/GeneratedCode.txt";
             String path = "src/test/resources/BinaryCode.bc";
-            try(FileWriter writer = new FileWriter(pathToFile))
+            try (FileWriter writer = new FileWriter(pathToFile))
             {
                 System.out.println("Writing code to the file...");
                 writer.write(builder.toString());
