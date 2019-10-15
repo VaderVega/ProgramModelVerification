@@ -1,0 +1,90 @@
+class String
+var
+    chars :array[] of char;
+    length :int;
+begin
+
+    public method String(cc :array[] of char, l: int)
+    begin
+        chars := cc;
+        length := l;
+    end
+
+    public method concat(other :String)
+    var
+        i, j, newLen :int;
+        r :String;
+    begin
+        newLen := other.length + this.length;
+        r := String(char(newLen), newLen);
+        i := 0; j := 0;
+        while i < this.length do begin
+            r.chars[i] := this.chars[i];
+            i := i + 1;
+        end
+        while j < other.length do begin
+            r.chars[i] := other.chars[j];
+            i := i + 1;
+            j := j + 1;
+        end
+        concat := r;
+    end
+end
+
+class Console
+var
+    stdin, stdout: int;
+begin
+    public method Console()
+    begin
+        stdin := 0;
+        stdout := 1;
+    end
+
+    private method read(fildes :int, buf :char[], nbytes :int) :int from c;
+    private method write(filedes: int, buf :char[], size :int) :int from "mylib.so";
+
+    public method print(cc :array[] of char, length: int)
+    begin
+        write(stdout, cc, length);
+    end
+
+    public method print(s :String)
+    begin
+        write(stdout, s.chars, s.length);
+    end
+
+    public method println(s :String)
+    begin
+        write(stdout, s.chars, s.length);
+        write(stdout, "\n", 1);
+    end
+
+    public method readln() :String
+    var
+        i, r :int;
+        buff, s :array[] of char;
+    begin
+        s := char(1000);
+        buff := char(1);
+        i := 0;
+        repeat begin
+            r := read(stdin, buff, 1);
+            s[i] := buff[0];
+            i := i + 1;
+        end while buff[0] != '\n' && r > 0
+        readline := String(s, i);
+    end
+end
+
+method main()
+    con :Console;
+    name, msg :String;
+begin
+    con := Console();
+    con.println("Username: ", 10);
+    name := con.readln();
+
+    msg := String("Hello, ", 7).concat(name).concat(String("!", 1));
+    con.println(msg);
+end

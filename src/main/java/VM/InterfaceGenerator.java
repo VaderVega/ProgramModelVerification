@@ -119,6 +119,7 @@ public class InterfaceGenerator {
         try {
             MyClassLoader loader = new MyClassLoader();
 
+            //Class.forName("VM.generatedClassName")
             Class c = loader.getClassFromFile(new File(className));
 
             File file = new File("MyClass.class");
