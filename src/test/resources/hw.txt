@@ -17,7 +17,8 @@ begin
     begin
         newLen := other.length + this.length;
         r := String(char(newLen), newLen);
-        i := 0; j := 0;
+        i := 0;
+        j := 0;
         while i < this.length do begin
             r.chars[i] := this.chars[i];
             i := i + 1;

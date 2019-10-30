@@ -31,9 +31,8 @@ public class CodeGeneratorImplementation implements CodeGenerator {
         init();
         compile(tree.getRoot());
         final List<String> instructions = program.stream().map(Object::toString).collect(Collectors.toList());
-        for (int i = 2; i < 4; i++)
-            instructions.remove(instructions.size() - i);
-        instructions.remove(instructions.size() - 2);
+
+
         logger.warn("Compilation finished, compiled {} instructions:\n{}", instructions.size(),
                 instructions.stream()
                         .collect(joining("\n")));
@@ -151,7 +150,10 @@ public class CodeGeneratorImplementation implements CodeGenerator {
                 break;
             case CLASS:
                 gen(ICLASS);
+                gen(node.getValue());
                 compile(node.getOp1());
+                compile(node.getOp2());
+                break;
             case DLL:
                 gen(IDLL);
                 gen(node.getValue());

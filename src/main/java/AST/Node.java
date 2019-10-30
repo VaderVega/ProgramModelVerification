@@ -2,6 +2,9 @@ package AST;
 
 import com.google.common.base.Objects;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Node {
 
     private NodeType nodeType;
@@ -10,9 +13,27 @@ public class Node {
     private Node op2 = null;
     private Node op3 = null;
 
+    private List<Node> params = new ArrayList<>();
+
     public String getValue() {
 
         return value;
+    }
+
+    public void addParam(Node p) {
+        params.add(p);
+    }
+
+    public List<Node> getAllParams() {
+        return params;
+    }
+
+    public Node getParamUsingIndex(int i) {
+        return params.get(i);
+    }
+
+    public int getAmountOfParams() {
+        return params.size();
     }
 
     public void setValue(String value) {
@@ -75,6 +96,6 @@ public class Node {
 
 
     public enum NodeType {
-        VAR, CONST, ADD, SUB, MOD, LT, GT, NE,  SET, IF, IF_ELSE, WHILE, EMPTY, SEQ, EXPR, ROOT, FUNC, FUNCPARAM, FUNCCALL, FUNCPARAMS, DECL, VARTYPE, RETURN, RETURNVALUE, PARAMS, DLL, CLASS
+        VAR, CONST, ADD, SUB, MOD, LT, GT, NE,  SET, IF, IF_ELSE, WHILE, EMPTY, SEQ, EXPR, ROOT, FUNC, FUNCPARAM, FUNCCALL, FUNCPARAMS, ARRAY, USERTYPE, FIELDCALL, DECL, VARTYPE, RETURN, RETURNVALUE, PARAMS, DLL, CLASS, CLASSVARS
     }
 }

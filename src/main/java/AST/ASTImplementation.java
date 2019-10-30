@@ -22,7 +22,7 @@ public class ASTImplementation implements AbstractSyntaxTree {
     private int tabCount = 0;
     private final Queue<Token> tokens;
 
-    private boolean classFields = true;
+    private boolean userType;
     private boolean dll = true;
 
 
@@ -134,13 +134,12 @@ public class ASTImplementation implements AbstractSyntaxTree {
                     n2.setOp1(n);
                     n2.setOp2(statement());
                     n = n2;
-
                 }
                 tokens.poll();
-                tokens.remove();
+                //tokens.remove();
                 break;
             case "method":
-                classFields = false;
+
                 n.setNodeType(FUNC);
                 tokens.poll();
                 n.setValue(tokens.poll().getToken());
@@ -171,7 +170,8 @@ public class ASTImplementation implements AbstractSyntaxTree {
                 n.setNodeType(CLASS);
                 tokens.poll();
                 n.setValue(tokens.poll().getToken());
-                n.setOp1(statement());
+                n.setOp1(classVars());
+                n.setOp2(statement());
                 break;
             default:
 
@@ -227,6 +227,24 @@ public class ASTImplementation implements AbstractSyntaxTree {
     }
 
 
+    private Node classVars() {
+        Node node = new Node();
+        node.setNodeType(CLASSVARS);
+        Token token = tokens.poll();
+        Preconditions.checkState(token.getToken().equals("var"), "\"var\" expected in class declaration");
+        Node previousNode = new Node();
+        previousNode.setNodeType(SEQ);
+        node.setOp1(previousNode);
+        while (!tokens.peek().getToken().equals("begin")) {
+            Node currentNode = new Node();
+            currentNode.setNodeType(SEQ);
+            currentNode.setOp1(statement());
+            previousNode.setOp2(currentNode);
+            previousNode = currentNode;
+        }
+        return node;
+    }
+
     private Node params() {
         Token token = tokens.poll();
         Preconditions.checkState(token.getToken().equals("("), "'(' expected");
@@ -241,21 +259,19 @@ public class ASTImplementation implements AbstractSyntaxTree {
         }
 
         node.setNodeType(PARAMS);
-        Node node1 = new Node();
-        Node node2 = new Node();
-        Node node3 = new Node();
-        for (int i = 0; i < 3; i++) {
-            if (!tokens.peek().getToken().equals(")") & i ==0) {
-                node1 = statement();
-                node.setOp1(node1);
-            } else if (!tokens.peek().getToken().equals(")") & i == 1) {
-                node2 = statement();
-                node.setOp2(node2);
-            } else if (!tokens.peek().getToken().equals(")") & i == 2) {
-                node3 = statement();
-                node.setOp3(node3);
-            }
+
+
+        Node previousNode = new Node();
+        previousNode.setNodeType(SEQ);
+        node.setOp1(previousNode);
+        while (!tokens.peek().getToken().equals(")")) {
+            Node currentNode = new Node();
+            currentNode.setNodeType(SEQ);
+            currentNode.setOp1(statement());
+            previousNode.setOp2(currentNode);
+            previousNode = currentNode;
         }
+
         tokens.poll();
         return node;
     }
@@ -287,6 +303,7 @@ public class ASTImplementation implements AbstractSyntaxTree {
 
     private Node expression() {
         final Token token = tokens.peek();
+        /*
         if (token.getTokenType() == Token.TokenType.VARTYPE && classFields) {
             Node node = new Node();
             node.setNodeType(DECL);
@@ -295,6 +312,8 @@ public class ASTImplementation implements AbstractSyntaxTree {
             node.setOp1(term());
             return node;
         }
+        */
+
         if (token.getTokenType() != Token.TokenType.IDENTIFIER) {
             return test();
         }
@@ -312,6 +331,9 @@ public class ASTImplementation implements AbstractSyntaxTree {
             Node node2 = new Node();
             node2.setNodeType(DECL);
             node2.setOp1(node);
+            if (!tokens.peek().getTokenType().equals(Token.TokenType.VARTYPE) || !tokens.peek().getTokenType().equals(Token.TokenType.KEYWORD)) {
+                //userType = true;
+            }
             node2.setOp2(expression());
             node = node2;
         }
@@ -386,11 +408,33 @@ public class ASTImplementation implements AbstractSyntaxTree {
                     node.setValue(token.getToken());
                     //tokens.poll();
                     return  node;
+                } else if (userType){
+                    node.setNodeType(USERTYPE);
+                    node.setValue(token.getToken());
+                    userType = false;
+                    return node;
+                } else if (tokens.peek().getToken().equals(".")) {
+                    node.setNodeType(FIELDCALL);
+                    node.setValue(token.getToken());
+                    tokens.poll();
+                    node.setOp1(term());
+                    return node;
                 }
                 node.setNodeType(VAR);
                 node.setValue(token.getToken());
                 //tokens.poll();
                 return node;
+                /*
+            case KEYWORD:
+                node.setNodeType(ARRAY);
+
+                tokens.poll();
+                tokens.poll();
+                tokens.poll();
+
+                node.setOp1(term());
+
+                return node;*/
             case NUMBER:
                 node.setNodeType(CONST);
                 node.setValue(token.getToken());

@@ -41,9 +41,9 @@ public class Token {
     public enum TokenType {
 
         OPERATOR("\\+|-|=|>|<|!|%|:=|:|,"),
-        SYMBOL("[\\{|\\}|;|(|)]"),
+        SYMBOL("[\\{|\\}|;|(|)|\\]\\[]"),
         VARTYPE("bool|byte|int|uint|long|ulong|char|string"),
-        KEYWORD("if|else|while|do|var|then|begin|end|method|return"),
+        KEYWORD("if|else|while|do|var|then|begin|end|method|return|array|this"),
         IDENTIFIER("[a-zA-Z_][a-zA-Z_0-9]*"),                             // идентификатор
         STR("\\\"[^\\\"\\\\]*(?:\\\\.[^\\\"\\\\]*)*\\\""),                // строка, окруженная двойными кавычками
         CHAR("'[^']'"),                                                   // одиночный символ в одинарных кавычках

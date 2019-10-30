@@ -125,7 +125,7 @@ public class VirtualMachineImplementation implements VirtualMachine {
 
                 //op = program.get();
             } else if (op.equals(ICLASS.toString())) {
-                pc += 3;
+                pc += 2;
             } else if (op.equals(IDLL.toString())) {
 
                 dllname = program.get(++pc);
