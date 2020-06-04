@@ -1,20 +1,34 @@
 package Compilation;
 
+import static Compilation.CodeGenerator.Instruction.DREM;
+import static Compilation.CodeGenerator.Instruction.HALT;
+import static Compilation.CodeGenerator.Instruction.IADD;
+import static Compilation.CodeGenerator.Instruction.ICLASS;
+import static Compilation.CodeGenerator.Instruction.IDLL;
+import static Compilation.CodeGenerator.Instruction.IFETCH;
+import static Compilation.CodeGenerator.Instruction.IFUNC;
+import static Compilation.CodeGenerator.Instruction.IFUNCCALL;
+import static Compilation.CodeGenerator.Instruction.IFUNCPARAM;
+import static Compilation.CodeGenerator.Instruction.IGT;
+import static Compilation.CodeGenerator.Instruction.ILT;
+import static Compilation.CodeGenerator.Instruction.INE;
+import static Compilation.CodeGenerator.Instruction.IPOP;
+import static Compilation.CodeGenerator.Instruction.IPUSH;
+import static Compilation.CodeGenerator.Instruction.ISTORE;
+import static Compilation.CodeGenerator.Instruction.ISUB;
+import static Compilation.CodeGenerator.Instruction.JMP;
+import static Compilation.CodeGenerator.Instruction.JZ;
+import static java.util.stream.Collectors.joining;
+
 import AST.AbstractSyntaxTree;
 import AST.Node;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-
-import static AST.Node.NodeType.*;
-import static AST.Node.NodeType.FUNC;
-import static Compilation.CodeGenerator.Instruction.*;
-import static java.util.stream.Collectors.joining;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class CodeGeneratorImplementation implements CodeGenerator {
     private static final Logger logger = LoggerFactory.getLogger(CodeGeneratorImplementation.class);

@@ -37,7 +37,6 @@ public class CFGListener extends MyLangBaseListener {
     }
 
 
-
     private CodeBlock currentVertex = null;
     private CodeBlock previousVertex = null;
 
@@ -227,24 +226,12 @@ public class CFGListener extends MyLangBaseListener {
             }
             tokens.poll();
         }
-        /*
-        String operator = currentVertex.getCode().replaceAll("[a-zA-Z_]([a-zA-Z_0-9])*|;|[0-9]+", "");
-        if (operator.length() > 2) {
-            operator = operator.replace(":=", "");
-            System.out.println(":=");
-              */                                                     // If we have only ":=" as operator
-            /**
-             *     compile(const)
-             *     gen(ISTORE)
-             *     VAR
-             */
+
             gen(IPUSH);                                                             // CONST
             gen(literal);
 
             gen(ISTORE);                                                            // SET
             gen(variables.removeFirst());
-
-
 
 
         if (operator == "-") {
@@ -268,13 +255,9 @@ public class CFGListener extends MyLangBaseListener {
         }
 
 
-
         System.out.println(operator);
 
-
-
         gen(IPOP);                                                              // EXPR
-
 
         String code = currentVertex.getCode();
 
@@ -304,10 +287,6 @@ public class CFGListener extends MyLangBaseListener {
     public void exitPlace(MyLangParser.PlaceContext ctx) {
         System.out.println("exit place");
     }
-
-
-
-
 
 
     @Override
@@ -392,89 +371,19 @@ public class CFGListener extends MyLangBaseListener {
         endElseBlock = true;
     }
 
-
-    @Override
-    public void enterStatementWhile(MyLangParser.StatementWhileContext ctx) {
-
-    }
-
-    @Override
-    public void exitStatementWhile(MyLangParser.StatementWhileContext ctx) {
-
-    }
-
-    @Override
-    public void enterStatementDo(MyLangParser.StatementDoContext ctx) {
-
-    }
-
-    @Override
-    public void exitStatementDo(MyLangParser.StatementDoContext ctx) {
-
-    }
-
-    @Override
-    public void enterStatementBreak(MyLangParser.StatementBreakContext ctx) {
-
-    }
-
-
-/*
-    public void exportGraph() throws org.jgrapht.io.ExportException {
-        IntegerComponentNameProvider<String> integr = new IntegerComponentNameProvider<>();
-
-        ComponentNameProvider<String> vertexLabelProvider = new ComponentNameProvider<String>() {
-            @Override
-            public String getName(String codeBlock) {
-                return codeBlock.toString();
-            }
-        };
-
-
-        ComponentNameProvider<DefaultEdge> edgeIDProvider = new ComponentNameProvider<DefaultEdge>() {
-            @Override
-            public String getName(DefaultEdge d) {
-                return d.toString();
-            }
-        };
-        ComponentNameProvider<String> vertexIDProvider = new ComponentNameProvider<String>() {
-            @Override
-            public String getName(String s) {
-                return s.toString();
-            }
-        };
-
-        GmlExporter<String, DefaultEdge> exporter = new GmlExporter<String, DefaultEdge>(integr, vertexLabelProvider, edgeIDProvider, null);
-        Writer w = new StringWriter();
-
-        exporter.exportGraph(controlFlowGraph, w);
-        System.out.println(w.toString());    }
-
-
-        */
     public void dotExporter  () throws org.jgrapht.io.ExportException {
-        IntegerComponentNameProvider<CodeBlock> integr = new IntegerComponentNameProvider<>();
-        ComponentNameProvider<String> vertexIdProvider = new ComponentNameProvider<String>() {
-            @Override
-            public String getName(String codeBlock) {
-                return codeBlock.toString();
-            }
-        };
-        ComponentNameProvider<CodeBlock> vertexLabelProvider = new ComponentNameProvider<CodeBlock>() {
-            @Override
-            public String getName(CodeBlock codeBlock) {
-                return codeBlock.getCode();
-            }
-        };
+        IntegerComponentNameProvider<CodeBlock> integer = new IntegerComponentNameProvider<>();
+        ComponentNameProvider<String> vertexIdProvider = codeBlock -> codeBlock;
+        ComponentNameProvider<CodeBlock> vertexLabelProvider = CodeBlock::getCode;
 
         InputFeatures ioFeatures = new InputFeatures();
 
 
-        GraphExporter<CodeBlock, DefaultEdge> exporter = new DOTExporter<CodeBlock, DefaultEdge>(integr, vertexLabelProvider, null);
+        GraphExporter<CodeBlock, DefaultEdge> exporter = new DOTExporter<>(integer,
+            vertexLabelProvider, null);
         Writer writer = new StringWriter();
         exporter.exportGraph(controlFlowGraph, writer);
         ioFeatures.writeFile(writer.toString(), "cfg.dot");
-        //System.out.println(writer.toString());
     }
 
 
@@ -482,8 +391,6 @@ public class CFGListener extends MyLangBaseListener {
         pc++;
         program.add(command.toString());
     }
-
-
 
 
 }

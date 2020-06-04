@@ -61,6 +61,54 @@ public interface MyLangVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitBody(MyLangParser.BodyContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link MyLangParser#varSpec}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitVarSpec(MyLangParser.VarSpecContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link MyLangParser#importSpec}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitImportSpec(MyLangParser.ImportSpecContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link MyLangParser#dllName}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitDllName(MyLangParser.DllNameContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link MyLangParser#dllEntryName}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitDllEntryName(MyLangParser.DllEntryNameContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link MyLangParser#classDef}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitClassDef(MyLangParser.ClassDefContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link MyLangParser#member}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitMember(MyLangParser.MemberContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link MyLangParser#field}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitField(MyLangParser.FieldContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link MyLangParser#modifier}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitModifier(MyLangParser.ModifierContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link MyLangParser#funcSignature}.
 	 * @param ctx the parse tree
 	 * @return the visitor result

@@ -15,11 +15,6 @@ import GeneratedFiles.MyLangLexer;
 import GeneratedFiles.MyLangParser;
 
 
-
-
-
-
-
 public class Lab1 {
     public static void main(String [] args) throws IOException {
         InputFeatures ioFeatures = new InputFeatures();
@@ -37,8 +32,6 @@ public class Lab1 {
         ioFeatures.writeFile(listener.toString(), "out.txt");
         try{
             cfgListener.dotExporter();
-            //System.out.println("================================");
-            //cfgListener.exportGraph();
         } catch (org.jgrapht.io.ExportException ex) {
             ex.getStackTrace();
         }

@@ -90,6 +90,86 @@ public interface MyLangListener extends ParseTreeListener {
 	 */
 	void exitBody(MyLangParser.BodyContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link MyLangParser#varSpec}.
+	 * @param ctx the parse tree
+	 */
+	void enterVarSpec(MyLangParser.VarSpecContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MyLangParser#varSpec}.
+	 * @param ctx the parse tree
+	 */
+	void exitVarSpec(MyLangParser.VarSpecContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link MyLangParser#importSpec}.
+	 * @param ctx the parse tree
+	 */
+	void enterImportSpec(MyLangParser.ImportSpecContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MyLangParser#importSpec}.
+	 * @param ctx the parse tree
+	 */
+	void exitImportSpec(MyLangParser.ImportSpecContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link MyLangParser#dllName}.
+	 * @param ctx the parse tree
+	 */
+	void enterDllName(MyLangParser.DllNameContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MyLangParser#dllName}.
+	 * @param ctx the parse tree
+	 */
+	void exitDllName(MyLangParser.DllNameContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link MyLangParser#dllEntryName}.
+	 * @param ctx the parse tree
+	 */
+	void enterDllEntryName(MyLangParser.DllEntryNameContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MyLangParser#dllEntryName}.
+	 * @param ctx the parse tree
+	 */
+	void exitDllEntryName(MyLangParser.DllEntryNameContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link MyLangParser#classDef}.
+	 * @param ctx the parse tree
+	 */
+	void enterClassDef(MyLangParser.ClassDefContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MyLangParser#classDef}.
+	 * @param ctx the parse tree
+	 */
+	void exitClassDef(MyLangParser.ClassDefContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link MyLangParser#member}.
+	 * @param ctx the parse tree
+	 */
+	void enterMember(MyLangParser.MemberContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MyLangParser#member}.
+	 * @param ctx the parse tree
+	 */
+	void exitMember(MyLangParser.MemberContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link MyLangParser#field}.
+	 * @param ctx the parse tree
+	 */
+	void enterField(MyLangParser.FieldContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MyLangParser#field}.
+	 * @param ctx the parse tree
+	 */
+	void exitField(MyLangParser.FieldContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link MyLangParser#modifier}.
+	 * @param ctx the parse tree
+	 */
+	void enterModifier(MyLangParser.ModifierContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MyLangParser#modifier}.
+	 * @param ctx the parse tree
+	 */
+	void exitModifier(MyLangParser.ModifierContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link MyLangParser#funcSignature}.
 	 * @param ctx the parse tree
 	 */
